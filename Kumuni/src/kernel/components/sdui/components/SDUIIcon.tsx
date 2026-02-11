@@ -172,6 +172,7 @@ const SDUIIcon: React.FC<SDUIRenderingProps> = ({ data }) => {
                     height={size}
                     fill={fill || "none"}
                     stroke={stroke || color}
+                    color={color}
                 />
             </View>
         );
