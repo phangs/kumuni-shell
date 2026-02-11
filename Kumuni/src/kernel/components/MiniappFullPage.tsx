@@ -47,9 +47,9 @@ const MiniappFullPage: React.FC<MiniappFullPageProps> = ({
         >
             <View style={styles.iconContainer}>
                 {item.icon ? (
-                    <SDUIIcon data={{ props: { name: item.icon, size: 28, color: '#000' } }} />
+                    <SDUIIcon data={{ props: { name: item.icon, size: 28 } }} />
                 ) : (
-                    <Text style={styles.emoji}>{item.emoji || '▦'}</Text>
+                    <Text style={[styles.emoji, { color: theme.colors.primary }]}>{item.emoji || '▦'}</Text>
                 )}
             </View>
             <Text style={styles.label}>{item.label}</Text>

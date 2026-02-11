@@ -14,7 +14,6 @@ const ServicesGrid: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
                                 props: {
                                     name: service.icon || service.imageUrl || '▦',
                                     size: 45,
-                                    color: '#000'
                                 }
                             }}
                         />
