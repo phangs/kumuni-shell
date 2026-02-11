@@ -515,22 +515,22 @@ export class MockInterceptor {
           type: 'PromosSection',
           props: {
             title: 'Running Promos',
-            badge: 'Hot Deals!',
-            promos: [
+            badgeText: 'Hot Deals!',
+            items: [
               {
                 shopName: "Nanay's Sari-Sari Store",
-                subtitle: "Daily essentials & snacks",
-                offerText: "20% OFF",
-                highlightText: "20% OFF sa lahat ng snacks!",
+                description: "Daily essentials & snacks",
+                offerBadge: "20% OFF",
+                highlight: "20% OFF sa lahat ng snacks!",
                 validUntil: "12.30.2025",
                 imageUrl: "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=400&h=300",
                 action: 'promo_nanay'
               },
               {
                 shopName: "Laundry Day",
-                subtitle: "Quick wash & dry",
-                offerText: "FREE 1KG",
-                highlightText: "Free 1kg for every 10kg wash",
+                description: "Quick wash & dry",
+                offerBadge: "FREE 1KG",
+                highlight: "Free 1kg for every 10kg wash",
                 validUntil: "11.15.2025",
                 imageUrl: "https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?q=80&w=400&h=300",
                 action: 'promo_laundry'
