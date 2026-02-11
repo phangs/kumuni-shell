@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, ActivityIndicator, Text } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ThemeProvider } from './src/kernel/components/ThemeProvider';
+import { ThemeProvider, useTheme } from './src/kernel/components/ThemeProvider';
 import { MockInterceptor } from './src/kernel/utils/MockInterceptor';
 import SDUIIntroPage from './src/kernel/components/SDUIIntroPage';
 import SDUIOnboarding from './src/kernel/components/SDUIOnboarding';
@@ -13,6 +13,7 @@ import Bootstrapper from './src/kernel/services/Bootstrapper';
 import { initRegistry } from './src/kernel/components/sdui/InitRegistry';
 
 const AppContent = () => {
+  const { theme, updateTheme } = useTheme();
   const [bootstrapped, setBootstrapped] = useState(false);
   const [stage, setStage] = useState('intro'); // intro -> onboarding -> dashboard
 
@@ -22,6 +23,10 @@ const AppContent = () => {
     MockInterceptor.enable();
     Bootstrapper.getInstance().initialize()
       .then(() => {
+        const config = Bootstrapper.getInstance().getMasterConfig();
+        if (config && config.theme) {
+          updateTheme({ colors: { ...theme.colors, primary: config.theme.primaryColor } });
+        }
         setBootstrapped(true);
       })
       .catch((err) => {
