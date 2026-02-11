@@ -39,9 +39,6 @@ export class MockInterceptor {
               return this.getMockMasterConfigResponse();
             }
 
-            if (typeof url === 'string' && url.includes('/central/app-config')) {
-              return this.getMockAppConfigResponse();
-            }
 
             if (typeof url === 'string' && url.includes('/central/sdui/intro-page')) {
               return this.getMockSDUIIntroPageResponse();
@@ -1163,10 +1160,6 @@ export class MockInterceptor {
     return Promise.resolve(new Response(JSON.stringify({ success: true, data }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
   }
 
-  private static getMockAppConfigResponse(): Promise<Response> {
-    const data = { colorScheme: { primary: "#00ff5e", secondary: "#1A1A1A" }, lguURL: "https://lgubackend.ctoglobal.co/" };
-    return Promise.resolve(new Response(JSON.stringify({ success: true, data }), { status: 200 }));
-  }
 
   private static getMockMasterConfigResponse(): Promise<Response> {
     console.log('MockInterceptor: Generating Master Config response...');
