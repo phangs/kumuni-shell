@@ -44,6 +44,7 @@ const HelpCenterScreen: React.FC<HelpCenterScreenProps> = ({ onBack }) => {
                             placeholder="Search"
                             placeholderTextColor="#A9A9A9"
                             style={styles.searchInput}
+                            autoFocus={false}
                         />
                         <TouchableOpacity>
                             <Text style={styles.micIcon}>🎙️</Text>

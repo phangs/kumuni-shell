@@ -19,6 +19,7 @@ const DashboardHeader: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
                         placeholder={data.props.searchPlaceholder || "Search..."}
                         placeholderTextColor="#999"
                         style={styles.headerInput}
+                        autoFocus={false}
                     />
                     <SDUIIcon data={{ props: { name: 'search_microphone', size: 20, color: '#999' } }} />
                 </View>
@@ -59,6 +60,7 @@ const DashboardHeader: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
                     placeholder={data.props.searchPlaceholder || "Search"}
                     placeholderTextColor="#999"
                     style={styles.headerInput}
+                    autoFocus={false}
                 />
                 <SDUIIcon data={{ props: { name: 'mic_icon', size: 18, color: '#C7C7CC' } }} />
             </View>

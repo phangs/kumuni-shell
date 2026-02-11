@@ -21,6 +21,7 @@ const MarketplaceHeader: React.FC<SDUIRenderingProps> = ({ data, onAction }) => 
                         placeholder="Search"
                         placeholderTextColor="#999"
                         style={styles.mktInput}
+                        autoFocus={false}
                     />
                     <SDUIIcon data={{ props: { name: 'search_microphone', size: 18, color: '#C7C7CC' } }} />
                 </View>
