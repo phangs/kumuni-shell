@@ -198,7 +198,7 @@ export class MockInterceptor {
                   { label: 'Medical Assistance', icon: 'https://dev-supabase.ctoglobal.co/storage/v1/object/public/app-icons/miniapps/2026/mini_medical-assistance.svg', action: 'medical' },
                   { label: 'Financial Assistance', icon: 'https://dev-supabase.ctoglobal.co/storage/v1/object/public/app-icons/miniapps/2026/mini_financial-assistance.svg', action: 'finance' },
                   { label: 'Educational Assistance', icon: 'https://dev-supabase.ctoglobal.co/storage/v1/object/public/app-icons/miniapps/2026/mini_educational-assistance.svg', action: 'edu' },
-                  { label: 'More', icon: 'https://dev-supabase.ctoglobal.co/storage/v1/object/public/app-icons/miniapps/2026/mini_more.svg', action: 'more' },
+                  { label: 'More', icon: 'mini_more', action: 'more' },
                 ]
               }
             },
