@@ -1248,6 +1248,7 @@ export class MockInterceptor {
   private static getMockHelpResponse(): Promise<Response> {
     const data = {
       type: 'HelpCenter',
+      styleMode: 'fullscreen',
       props: {}
     };
     return Promise.resolve(new Response(JSON.stringify({ success: true, data }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
