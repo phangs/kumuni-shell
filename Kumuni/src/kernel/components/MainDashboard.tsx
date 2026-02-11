@@ -378,7 +378,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
     };
 
     const getActiveTab = (): 'home' | 'marketplace' | 'wallet' | 'profile' | 'help' | null => {
-        if (showHelpCenter) return 'help';
+        if (currentPath.includes('help')) return 'help';
         if (currentPath.includes('dashboard')) return 'home';
         if (currentPath.includes('marketplace')) return 'marketplace';
         if (currentPath.includes('wallet')) return 'wallet';
