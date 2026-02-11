@@ -16,6 +16,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from './ThemeProvider';
 import KernelBridge from '../../shared/api/KernelBridge';
 
+import SDUIIcon from './sdui/components/SDUIIcon';
+
 const { width } = Dimensions.get('window');
 
 interface RegistrationScreenProps {
@@ -89,8 +91,7 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({ onBack, onSendO
                     <View style={styles.logoContainer}>
                         <View style={styles.logoRow}>
                             <View style={styles.logoIcon}>
-                                <View style={styles.logoKLeft} />
-                                <View style={styles.logoKRight} />
+                                <SDUIIcon data={{ props: { name: 'app_logo', size: 40, color: '#000' } }} />
                             </View>
                             <Text style={styles.logoText}>Kumuni</Text>
                         </View>
@@ -195,32 +196,9 @@ const styles = StyleSheet.create({
     logoIcon: {
         width: 40,
         height: 40,
-        backgroundColor: '#000',
-        borderRadius: 8,
         marginRight: 12,
-        overflow: 'hidden',
-        position: 'relative',
-    },
-    logoKLeft: {
-        position: 'absolute',
-        left: 8,
-        top: 8,
-        bottom: 8,
-        width: 6,
-        backgroundColor: '#FFF',
-    },
-    logoKRight: {
-        position: 'absolute',
-        right: 8,
-        top: 8,
-        bottom: 8,
-        left: 14,
-        borderTopWidth: 12,
-        borderBottomWidth: 12,
-        borderLeftWidth: 12,
-        borderTopColor: 'transparent',
-        borderBottomColor: 'transparent',
-        borderLeftColor: '#FFF',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     logoText: {
         fontSize: 32,
