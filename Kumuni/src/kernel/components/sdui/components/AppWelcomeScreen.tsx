@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from 'rea
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SDUIRenderingProps } from '../SDUIRegistry';
 import SDUIIcon from './SDUIIcon';
+import { useTheme } from '../../ThemeProvider';
 
 /**
  * AppWelcomeScreen - A standardized, semantic welcome screen for miniapps.
@@ -18,6 +19,7 @@ import SDUIIcon from './SDUIIcon';
  * - buttonText: string
  */
 const AppWelcomeScreen: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
+    const { theme } = useTheme();
     const insets = useSafeAreaInsets();
     const {
         heroImage,
@@ -108,7 +110,7 @@ const AppWelcomeScreen: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
 
             {/* Footer Action */}
             <View style={styles.footer}>
-                <TouchableOpacity style={styles.primaryButton} onPress={handlePress}>
+                <TouchableOpacity style={[styles.primaryButton, { backgroundColor: theme.colors.primary }]} onPress={handlePress}>
                     <Text style={styles.buttonText}>{buttonText}</Text>
                 </TouchableOpacity>
             </View>

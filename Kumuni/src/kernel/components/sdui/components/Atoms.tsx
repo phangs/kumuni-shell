@@ -3,6 +3,7 @@ import { View, ScrollView, Text, TouchableOpacity, StyleSheet, TextInput, Image,
 import { SDUIRenderingProps, useRenderer, SDUIFormContext } from '../SDUIRegistry';
 import SDUIIcon from './SDUIIcon';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useTheme } from '../../ThemeProvider';
 
 export const SDUIContainer: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
     const SDUIRenderer = useRenderer();
@@ -55,6 +56,7 @@ export const SDUIImage: React.FC<SDUIRenderingProps> = ({ data }) => (
 
 export const SDUIButton: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
     // Handle both { action: { type, params } } and { action: "string", actionParams: {} }
+    const { theme } = useTheme();
     const actionType = typeof data.action === 'object' ? data.action.type : (data.props.action || data.action);
     const actionParams = typeof data.action === 'object' ? data.action.params : (data.props.actionParams || {});
     const variant = data.props.variant || 'default';
@@ -64,7 +66,7 @@ export const SDUIButton: React.FC<SDUIRenderingProps> = ({ data, onAction }) => 
             style={[
                 styles.buttonBase,
                 data.props.style,
-                variant === 'primary' && styles.btnPrimary,
+                variant === 'primary' && { backgroundColor: theme.colors.primary },
                 variant === 'outline' && styles.btnOutline
             ]}
             onPress={() => onAction?.(actionType, actionParams)}

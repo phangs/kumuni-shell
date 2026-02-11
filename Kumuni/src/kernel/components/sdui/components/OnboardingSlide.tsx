@@ -2,8 +2,10 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { SDUIRenderingProps } from '../SDUIRegistry';
 import { screenWidth } from '../BaseStyles';
+import { useTheme } from '../../ThemeProvider';
 
 const OnboardingSlide: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
+    const { theme } = useTheme();
     return (
         <View style={styles.onboardingContainer}>
             <View style={[styles.onboardingVisual, { backgroundColor: data.props.backgroundColor || '#FFF' }]}>
@@ -50,7 +52,7 @@ const OnboardingSlide: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
 
                 <View style={styles.onboardingFooter}>
                     <TouchableOpacity
-                        style={styles.continueBtn}
+                        style={[styles.continueBtn, { backgroundColor: theme.colors.primary }]}
                         onPress={() => {
                             const action = typeof data.action === 'object' ? data.action.type : (data.props.action || data.action);
                             const params = typeof data.action === 'object' ? data.action.params : (data.props.actionParams || {});

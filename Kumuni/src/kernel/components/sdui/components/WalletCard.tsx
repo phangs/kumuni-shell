@@ -38,7 +38,7 @@ const WalletCard: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
                     <Text style={styles.promoWalletTitle}>{title}</Text>
                     <TouchableOpacity style={styles.promoWalletBtn} onPress={() => onAction?.(action)}>
                         <Text style={styles.promoWalletBtnText}>{btnText}</Text>
-                        <View style={styles.arrowCircle}>
+                        <View style={[styles.arrowCircle, { backgroundColor: theme.colors.primary }]}>
                             <SDUIIcon data={{ props: { name: 'wc_ArrowUp', size: 24, color: '#FFF' } }} />
                         </View>
                     </TouchableOpacity>

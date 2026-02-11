@@ -76,8 +76,9 @@ const MiniappDrawer: React.FC<MiniappDrawerProps> = ({
 
                     <View style={styles.header}>
                         <Text style={styles.title}>Services</Text>
-                        <TouchableOpacity onPress={onExpand}>
-                            <Text style={styles.seeAllText}>See All ↗</Text>
+                        <TouchableOpacity onPress={onExpand} style={styles.seeAllContainer}>
+                            <Text style={styles.seeAllText}>See All</Text>
+                            <SDUIIcon data={{ props: { name: 'arrow_up_right', size: 20, color: '#3498db' } }} />
                         </TouchableOpacity>
                     </View>
 
@@ -145,6 +146,10 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: 'bold',
         color: '#3498db',
+    },
+    seeAllContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     listContent: {
         paddingHorizontal: 15,

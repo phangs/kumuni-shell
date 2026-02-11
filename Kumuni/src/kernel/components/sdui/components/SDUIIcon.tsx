@@ -18,6 +18,7 @@ import navPersonGuest from '../../../assets/icons/nav_person_guest.svg';
 import registrationKumuniLogo from '../../../assets/icons/registration_kumuni-logo.svg';
 import regLogomark from '../../../assets/icons/reg-logomark.svg';
 import miniMore from '../../../assets/icons/mini_more.svg';
+import iconArrowUpRight from '../../../assets/icons/icon_arrow_up_right.svg';
 
 /**
  * SDUIIcon - A flexible icon component supporting multiple formats
@@ -59,6 +60,7 @@ const SVG_MAP: { [key: string]: React.FC<any> } = {
     'registration_kumuni_logo': registrationKumuniLogo,
     'reg_logomark': regLogomark,
     'mini_more': miniMore,
+    'arrow_up_right': iconArrowUpRight,
 };
 
 // Icon mapping for common icons (can be extended)
