@@ -56,6 +56,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
     const [pendingToken, setPendingToken] = useState('');
     const [moreMiniapps, setMoreMiniapps] = useState<any[]>([]);
     const [fetchingMore, setFetchingMore] = useState(false);
+    const [userLevel, setUserLevel] = useState<UserLevel>(UserManager.getInstance().getUserLevel());
     const { theme } = useTheme();
     const insets = useSafeAreaInsets();
     const fadeAnim = React.useRef(new Animated.Value(1)).current;
@@ -174,6 +175,11 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
             if (sduiData) setPrevSduiData(sduiData);
             setPrevPath(currentPath);
             setCurrentPath('/central/marketplace');
+            return;
+        }
+
+        if (action === 'nav_wallet') {
+            Alert.alert('Wallet', 'Wallet feature coming soon!');
             return;
         }
 
@@ -346,12 +352,23 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
         }
     };
 
-    const getActiveTab = () => {
+    const getActiveTab = (): 'home' | 'marketplace' | 'wallet' | 'profile' | 'help' | null => {
+        if (showHelpCenter) return 'help';
         if (currentPath.includes('dashboard')) return 'home';
         if (currentPath.includes('marketplace')) return 'marketplace';
-        if (currentPath.includes('chat')) return 'chat';
+        if (currentPath.includes('wallet')) return 'wallet';
         if (currentPath.includes('profile')) return 'profile';
         return null; // Hide nav bar for detailed views/miniapps
+    };
+
+    const activeTab = getActiveTab();
+
+    const handleLogout = async () => {
+        await UserManager.getInstance().logout();
+        setUserLevel(UserLevel.GUEST);
+        setCurrentPath('/central/dashboard');
+        setShowProfile(false);
+        if (onLogout) onLogout();
     };
 
     if (loading && !sduiData) {
@@ -374,7 +391,6 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
         );
     }
 
-    const activeTab = getActiveTab();
 
     return (
         <View style={styles.container}>
@@ -426,21 +442,50 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
             {activeTab && (
                 <View style={[styles.navContainer, { bottom: Math.max(insets.bottom, 20) }]}>
                     <View style={styles.navBar}>
-                        <TouchableOpacity onPress={() => handleAction('nav_home')}>
-                            <SDUIIcon data={{ props: { name: 'home', size: 37, color: activeTab === 'home' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'home' ? 1 : 0.6 } } }} />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => handleAction('nav_marketplace')}>
-                            <SDUIIcon data={{ props: { name: 'marketplace', size: 37, color: activeTab === 'marketplace' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'marketplace' ? 1 : 0.6 } } }} />
-                        </TouchableOpacity>
-                        <View style={styles.qrCircle}>
-                            <SDUIIcon data={{ props: { name: 'qr', size: 37, color: '#000' } }} />
-                        </View>
-                        <TouchableOpacity onPress={() => handleAction('nav_chat')}>
-                            <SDUIIcon data={{ props: { name: 'chat', size: 37, color: activeTab === 'chat' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'chat' ? 1 : 0.6 } } }} />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => handleAction('nav_profile')}>
-                            <SDUIIcon data={{ props: { name: 'user', size: 37, color: activeTab === 'profile' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'profile' ? 1 : 0.6 } } }} />
-                        </TouchableOpacity>
+                        {userLevel === UserLevel.GUEST ? (
+                            // Guest Nav Bar: 4 Icons
+                            <>
+                                <TouchableOpacity onPress={() => handleAction('nav_home')} style={styles.navItem}>
+                                    <View style={activeTab === 'home' ? styles.activeIconCircle : null}>
+                                        <SDUIIcon data={{ props: { name: 'home', size: 30, color: activeTab === 'home' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'home' ? 1 : 0.6 } } }} />
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => handleAction('nav_marketplace')} style={styles.navItem}>
+                                    <View style={activeTab === 'marketplace' ? styles.activeIconCircle : null}>
+                                        <SDUIIcon data={{ props: { name: 'marketplace', size: 30, color: activeTab === 'marketplace' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'marketplace' ? 1 : 0.6 } } }} />
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => handleAction('help')} style={styles.navItem}>
+                                    <View style={activeTab === 'help' ? styles.activeIconCircle : null}>
+                                        <SDUIIcon data={{ props: { name: 'help', size: 30, color: activeTab === 'help' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'help' ? 1 : 0.6 } } }} />
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => handleAction('nav_profile')} style={styles.navItem}>
+                                    <View style={activeTab === 'profile' ? styles.activeIconCircle : null}>
+                                        <SDUIIcon data={{ props: { name: 'user', size: 30, color: activeTab === 'profile' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'profile' ? 1 : 0.6 } } }} />
+                                    </View>
+                                </TouchableOpacity>
+                            </>
+                        ) : (
+                            // Registered/Verified Nav Bar: 5 Icons with Central QR
+                            <>
+                                <TouchableOpacity onPress={() => handleAction('nav_home')}>
+                                    <SDUIIcon data={{ props: { name: 'home', size: 35, color: activeTab === 'home' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'home' ? 1 : 0.6 } } }} />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => handleAction('nav_marketplace')}>
+                                    <SDUIIcon data={{ props: { name: 'marketplace', size: 35, color: activeTab === 'marketplace' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'marketplace' ? 1 : 0.6 } } }} />
+                                </TouchableOpacity>
+                                <View style={styles.qrCircle}>
+                                    <SDUIIcon data={{ props: { name: 'qr', size: 35, color: '#000' } }} />
+                                </View>
+                                <TouchableOpacity onPress={() => handleAction('nav_wallet')}>
+                                    <SDUIIcon data={{ props: { name: 'wallet', size: 35, color: activeTab === 'wallet' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'wallet' ? 1 : 0.6 } } }} />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => handleAction('nav_profile')}>
+                                    <SDUIIcon data={{ props: { name: 'user', size: 35, color: activeTab === 'profile' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'profile' ? 1 : 0.6 } } }} />
+                                </TouchableOpacity>
+                            </>
+                        )}
                     </View>
                 </View>
             )}
@@ -486,11 +531,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
                         }}
                         onAction={(act) => {
                             if (act === 'logout') {
-                                console.log('MainDashboard: Initiating logout...');
-                                UserManager.getInstance().logout().then(() => {
-                                    setShowProfile(false);
-                                    onLogout?.();
-                                });
+                                handleLogout();
                             }
                             if (act === 'personal_info') {
                                 setShowPersonalInfo(true);
@@ -587,7 +628,10 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
             {showPinScreen && (
                 <View style={[StyleSheet.absoluteFill, { zIndex: 1002 }]}>
                     <PinCodeScreen
-                        onComplete={handlePinComplete}
+                        onComplete={async (pin) => {
+                            await handlePinComplete(pin);
+                            setUserLevel(UserLevel.REGISTERED);
+                        }}
                     />
                 </View>
             )}
@@ -688,6 +732,25 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 5 },
         shadowOpacity: 0.2,
         shadowRadius: 8,
+    },
+    navItem: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+    },
+    activeIconCircle: {
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: '#FFF',
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
+        elevation: 5,
     },
 });
 
