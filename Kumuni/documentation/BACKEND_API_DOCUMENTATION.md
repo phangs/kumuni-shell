@@ -16,6 +16,30 @@ All requests to Central or Tenant backends include:
 ## 🏛️ 1. Central Backend
 **Base URL**: `https://central-api.kumuni.com`
 
+### ⚙️ System Initialization (Bootstrap)
+**GET** `/master_config`
+This is the first call made by the app to determine theme, backend URLs, credentials, and module permissions.
+- **Expected Response**:
+```json
+{
+  "theme": { "primaryColor": "#00ff5e", "secondaryColor": "#1A1A1A" },
+  "central_config": { 
+    "url": "https://central-api.kumuni.com", 
+    "credentials": { "apiKey": "...", "secret": "..." } 
+  },
+  "tenant_config": { 
+    "id": "dev-tenant-123", 
+    "url": "https://tenant-api.kumuni.com", 
+    "credentials": { "apiKey": "...", "secret": "..." } 
+  },
+  "module_registry": [
+    { "id": "shell", "name": "Kumuni Shell", "type": "sdui", "permissions": ["*"] },
+    { "id": "cedula", "name": "Cedula Application", "type": "sdui", "entry_url": "...", "permissions": ["/mobile/submission"] }
+  ],
+  "cms_content": { "dashboard_news": [], "banners": [] }
+}
+```
+
 ### 🔑 Authentication
 #### **POST** `/auth/guest`
 - **Request Body**: `{ "tenantId": "dev-tenant-123" }`
@@ -169,26 +193,3 @@ All requests to Central or Tenant backends include:
 }
 ```
 
----
-
-## ⚙️ 3. Initialization
-**GET** `https://mock-api.example.com/master_config`
-- **Response**:
-```json
-{
-  "theme": { "primaryColor": "#00ff5e", "secondaryColor": "#1A1A1A" },
-  "central_config": { 
-    "url": "https://central-api.kumuni.com", 
-    "credentials": { "apiKey": "...", "secret": "..." } 
-  },
-  "tenant_config": { 
-    "id": "dev-tenant-123", 
-    "url": "https://tenant-api.kumuni.com", 
-    "credentials": { "apiKey": "...", "secret": "..." } 
-  },
-  "module_registry": [
-    { "id": "shell", "name": "Kumuni Shell", "type": "sdui", "permissions": ["*"] },
-    { "id": "cedula", "name": "Cedula Application", "type": "sdui", "entry_url": "...", "permissions": ["/mobile/submission"] }
-  ]
-}
-```
