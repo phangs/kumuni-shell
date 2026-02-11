@@ -1,0 +1,526 @@
+{
+    "version": "2.0.0",
+    "name": "Cedula Application",
+    "description": "Application for Community Tax Certificate (Cedula)",
+    "slug": "cedula",
+    "isPublic": false,
+    "payment": {
+        "enabled": true,
+        "currency": "PHP",
+        "paymentType": "payNow",
+        "breakdowns": [
+            {
+                "mode": "fixed",
+                "id": "cedulaAmount",
+                "title": "Cedula Fee",
+                "value": 100
+            },
+            {
+                "mode": "formula",
+                "id": "convenienceFee",
+                "title": "Convenience Fee",
+                "expression": "0.10 * cedulaAmount",
+                "dependsOn": [
+                    "cedulaAmount"
+                ]
+            }
+        ],
+        "roundTo": 2,
+        "notes": [
+            {
+                "text": "Convenience fee is 10% of the cedula amount",
+                "color": "#035afc"
+            }
+        ]
+    },
+    "permissions": [
+        "firstName",
+        "lastName",
+        "middleName",
+        "mobileNumber",
+        "email",
+        "dateOfBirth",
+        "address"
+    ],
+    "statuses": [
+        "Submitted",
+        "Processing",
+        "Ready for Pickup",
+        "For Delivery",
+        "Claimed",
+        "Rejected"
+    ],
+    "navigation": {
+        "initialPageId": "welcome",
+        "guestPageId": "welcome"
+    },
+    "pages": [
+        {
+            "id": "welcome",
+            "order": 0,
+            "title": "Welcome",
+            "styleMode": "fullscreen",
+            "components": [
+                {
+                    "type": "AppWelcomeScreen",
+                    "props": {
+                        "heroImage": "https://dev-supabase.ctoglobal.co/storage/v1/object/public/miniapp-images/Man1-min.png",
+                        "logoIcon": "https://dev-supabase.ctoglobal.co/storage/v1/object/public/miniapp-images/icons/cedula-icon.png",
+                        "title": "Online Cedula",
+                        "welcomeMessage": "Welcome to Online Cedula",
+                        "description": "Apply for your Community Tax Certificate (Cedula) quickly and securely from your mobile device.",
+                        "features": [
+                            {
+                                "icon": "edit",
+                                "title": "Easy & Quick",
+                                "description": "Complete in just a few minutes"
+                            },
+                            {
+                                "icon": "shield",
+                                "title": "Secure & Private",
+                                "description": "Your data is encrypted and protected"
+                            },
+                            {
+                                "icon": "sparkles",
+                                "title": "Modern Design",
+                                "description": "Trend and user-friendly"
+                            }
+                        ],
+                        "requirements": [
+                            "At least 18 years old",
+                            "Valid government-issued ID",
+                            "Proof of residency in the city",
+                            "Proof of income or employment (if applicable)"
+                        ],
+                        "buttonText": "Get Started"
+                    },
+                    "action": {
+                        "type": "@pushPage",
+                        "params": {
+                            "pageId": "personal_information"
+                        }
+                    },
+                    "visibleWhen": {
+                        "userLevel": [
+                            "registered",
+                            "verified"
+                        ]
+                    }
+                },
+                {
+                    "type": "AppWelcomeScreen",
+                    "props": {
+                        "heroImage": "https://dev-supabase.ctoglobal.co/storage/v1/object/public/miniapp-images/Man1-min.png",
+                        "logoIcon": "https://dev-supabase.ctoglobal.co/storage/v1/object/public/miniapp-images/icons/cedula-icon.png",
+                        "title": "Online Cedula",
+                        "welcomeMessage": "Welcome to Online Cedula",
+                        "description": "Apply for your Community Tax Certificate (Cedula) quickly and securely from your mobile device.",
+                        "features": [
+                            {
+                                "icon": "edit",
+                                "title": "Easy & Quick",
+                                "description": "Complete in just a few minutes"
+                            },
+                            {
+                                "icon": "shield",
+                                "title": "Secure & Private",
+                                "description": "Your data is encrypted and protected"
+                            },
+                            {
+                                "icon": "sparkles",
+                                "title": "Modern Design",
+                                "description": "Trend and user-friendly"
+                            }
+                        ],
+                        "requirements": [
+                            "At least 18 years old",
+                            "Valid government-issued ID",
+                            "Proof of residency in the city",
+                            "Proof of income or employment (if applicable)"
+                        ],
+                        "buttonText": "Sign Up to Continue"
+                    },
+                    "action": {
+                        "type": "@register",
+                        "params": {}
+                    },
+                    "visibleWhen": {
+                        "userLevel": [
+                            "guest"
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "id": "personal_information",
+            "order": 1,
+            "title": "Personal Information",
+            "components": [
+                {
+                    "type": "heading",
+                    "props": {
+                        "text": "Personal Information",
+                        "style": {
+                            "fontSize": 24,
+                            "fontWeight": "bold",
+                            "marginBottom": 20
+                        }
+                    }
+                },
+                {
+                    "type": "text",
+                    "props": {
+                        "text": "Please provide your personal details as they appear on your government-issued ID.",
+                        "style": {
+                            "color": "#666",
+                            "marginBottom": 30,
+                            "lineHeight": 22
+                        }
+                    }
+                },
+                {
+                    "id": "firstName",
+                    "type": "text-input",
+                    "props": {
+                        "label": "First Name",
+                        "placeholder": "Enter your first name",
+                        "autoCapitalize": "words",
+                        "keyboardType": "default"
+                    },
+                    "validation": {
+                        "required": true,
+                        "minLength": 2,
+                        "maxLength": 100,
+                        "errorMessage": "First name is required (2-100 characters)"
+                    }
+                },
+                {
+                    "id": "middleName",
+                    "type": "text-input",
+                    "props": {
+                        "label": "Middle Name",
+                        "placeholder": "Enter your middle name",
+                        "autoCapitalize": "words",
+                        "keyboardType": "default"
+                    },
+                    "validation": {
+                        "required": true,
+                        "maxLength": 100
+                    }
+                },
+                {
+                    "id": "lastName",
+                    "type": "text-input",
+                    "props": {
+                        "label": "Last Name",
+                        "placeholder": "Enter your last name",
+                        "autoCapitalize": "words",
+                        "keyboardType": "default"
+                    },
+                    "validation": {
+                        "required": true,
+                        "minLength": 2,
+                        "maxLength": 100,
+                        "errorMessage": "Last name is required (2-100 characters)"
+                    }
+                },
+                {
+                    "id": "dateOfBirth",
+                    "type": "date-picker",
+                    "props": {
+                        "label": "Date of Birth",
+                        "placeholder": "Select your date of birth"
+                    },
+                    "validation": {
+                        "required": true,
+                        "max": "today",
+                        "errorMessage": "You must be at least 18 years old"
+                    }
+                },
+                {
+                    "id": "placeOfBirth",
+                    "type": "text-input",
+                    "props": {
+                        "label": "Place of Birth",
+                        "placeholder": "City/Municipality, Province",
+                        "autoCapitalize": "words",
+                        "keyboardType": "default"
+                    },
+                    "validation": {
+                        "required": true,
+                        "minLength": 2,
+                        "maxLength": 255,
+                        "errorMessage": "Place of birth is required"
+                    }
+                },
+                {
+                    "id": "fullAddress",
+                    "type": "textarea",
+                    "props": {
+                        "label": "Complete Address",
+                        "placeholder": "House/Unit No., Street, Barangay, City/Municipality, Province",
+                        "rows": 3,
+                        "multiline": true,
+                        "autoCapitalize": "sentences"
+                    },
+                    "validation": {
+                        "required": true,
+                        "minLength": 10,
+                        "maxLength": 500,
+                        "errorMessage": "Complete address is required"
+                    }
+                },
+                {
+                    "type": "button",
+                    "props": {
+                        "title": "Next",
+                        "variant": "primary",
+                        "style": {
+                            "marginTop": 20
+                        }
+                    },
+                    "action": {
+                        "type": "@pushPage",
+                        "params": {
+                            "pageId": "review"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "id": "review",
+            "order": 2,
+            "title": "Review & Payment",
+            "components": [
+                {
+                    "type": "heading",
+                    "props": {
+                        "text": "Review Your Application",
+                        "style": {
+                            "fontSize": 24,
+                            "fontWeight": "bold",
+                            "marginBottom": 20
+                        }
+                    }
+                },
+                {
+                    "type": "text",
+                    "props": {
+                        "text": "Please review your information carefully before proceeding to payment.",
+                        "style": {
+                            "color": "#666",
+                            "marginBottom": 30,
+                            "lineHeight": 22
+                        }
+                    }
+                },
+                {
+                    "type": "container",
+                    "props": {
+                        "style": {
+                            "backgroundColor": "#F5F5F7",
+                            "padding": 20,
+                            "borderRadius": 12,
+                            "marginBottom": 20
+                        }
+                    },
+                    "children": [
+                        {
+                            "type": "text",
+                            "props": {
+                                "text": "Payment Summary",
+                                "style": {
+                                    "fontWeight": "bold",
+                                    "fontSize": 18,
+                                    "marginBottom": 15
+                                }
+                            }
+                        },
+                        {
+                            "type": "container",
+                            "props": {
+                                "style": {
+                                    "flexDirection": "row",
+                                    "justifyContent": "space-between",
+                                    "marginBottom": 10
+                                }
+                            },
+                            "children": [
+                                {
+                                    "type": "text",
+                                    "props": {
+                                        "text": "Cedula Fee",
+                                        "style": {
+                                            "color": "#666"
+                                        }
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "props": {
+                                        "text": "₱100.00",
+                                        "style": {
+                                            "fontWeight": "600"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "container",
+                            "props": {
+                                "style": {
+                                    "flexDirection": "row",
+                                    "justifyContent": "space-between",
+                                    "marginBottom": 15,
+                                    "paddingBottom": 15,
+                                    "borderBottomWidth": 1,
+                                    "borderBottomColor": "#DDD"
+                                }
+                            },
+                            "children": [
+                                {
+                                    "type": "text",
+                                    "props": {
+                                        "text": "Convenience Fee (10%)",
+                                        "style": {
+                                            "color": "#666"
+                                        }
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "props": {
+                                        "text": "₱10.00",
+                                        "style": {
+                                            "fontWeight": "600"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "container",
+                            "props": {
+                                "style": {
+                                    "flexDirection": "row",
+                                    "justifyContent": "space-between"
+                                }
+                            },
+                            "children": [
+                                {
+                                    "type": "text",
+                                    "props": {
+                                        "text": "Total Amount",
+                                        "style": {
+                                            "fontWeight": "bold",
+                                            "fontSize": 18
+                                        }
+                                    }
+                                },
+                                {
+                                    "type": "text",
+                                    "props": {
+                                        "text": "₱110.00",
+                                        "style": {
+                                            "fontWeight": "bold",
+                                            "fontSize": 18,
+                                            "color": "#035afc"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "container",
+                    "props": {
+                        "style": {
+                            "backgroundColor": "#E3F2FD",
+                            "padding": 15,
+                            "borderRadius": 8,
+                            "marginBottom": 30
+                        }
+                    },
+                    "children": [
+                        {
+                            "type": "text",
+                            "props": {
+                                "text": "ℹ️ Convenience fee is 10% of the cedula amount",
+                                "style": {
+                                    "color": "#035afc",
+                                    "fontSize": 14
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "container",
+                    "props": {
+                        "style": {
+                            "flexDirection": "row",
+                            "gap": 10
+                        }
+                    },
+                    "children": [
+                        {
+                            "type": "button",
+                            "props": {
+                                "title": "Back",
+                                "style": {
+                                    "flex": 1,
+                                    "backgroundColor": "#F5F5F7"
+                                },
+                                "textStyle": {
+                                    "color": "#333"
+                                }
+                            },
+                            "action": {
+                                "type": "@popPage",
+                                "params": {}
+                            }
+                        },
+                        {
+                            "type": "button",
+                            "props": {
+                                "title": "Proceed to Payment",
+                                "variant": "primary",
+                                "style": {
+                                    "flex": 2
+                                }
+                            },
+                            "action": {
+                                "type": "@submitForm",
+                                "params": {
+                                    "endpoint": "/tenant/miniapps/cedula/submit",
+                                    "method": "POST",
+                                    "data": {
+                                        "schema_version": "2.0"
+                                    },
+                                    "onSuccess": {
+                                        "type": "@toast",
+                                        "params": {
+                                            "message": "Application submitted successfully! Proceeding to payment..."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "metadata": {
+        "createdBy": "system",
+        "createdAt": "2026-02-10T15:37:00Z",
+        "updatedAt": "2026-02-10T15:37:00Z",
+        "revision": 2,
+        "schemaVersion": "2.0",
+        "notes": "Updated to use AppWelcomeScreen component and removed grid-based layout. Added visibleWhen for conditional rendering based on user level."
+    }
+}
