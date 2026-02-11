@@ -91,7 +91,7 @@ const RegistrationScreen: React.FC<RegistrationScreenProps> = ({ onBack, onSendO
                     <View style={styles.logoContainer}>
                         <View style={styles.logoRow}>
                             <View style={styles.logoIcon}>
-                                <SDUIIcon data={{ props: { name: 'app_logo', size: 40, color: '#000' } }} />
+                                <SDUIIcon data={{ props: { name: 'reg_logomark', size: 40, color: '#000' } }} />
                             </View>
                             <Text style={styles.logoText}>Kumuni</Text>
                         </View>
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     },
     content: {
         paddingHorizontal: 30,
-        alignItems: 'flex-start',
+        alignItems: 'center',
         paddingBottom: 40,
     },
     scrollContent: {
@@ -188,6 +188,8 @@ const styles = StyleSheet.create({
     logoContainer: {
         marginTop: 20,
         marginBottom: 80,
+        alignItems: 'center',
+        width: '100%',
     },
     logoRow: {
         flexDirection: 'row',
@@ -208,18 +210,21 @@ const styles = StyleSheet.create({
     },
     headingArea: {
         marginBottom: 40,
+        alignItems: 'center',
     },
     title: {
         fontSize: 28,
         fontWeight: '900',
         color: '#000',
         marginBottom: 12,
+        textAlign: 'center',
     },
     subtitle: {
         fontSize: 15,
         color: '#666',
         lineHeight: 22,
         fontWeight: '400',
+        textAlign: 'center',
     },
     inputContainer: {
         flexDirection: 'row',
