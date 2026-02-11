@@ -3,8 +3,10 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Keyboard } from 'r
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SDUIRenderingProps } from '../SDUIRegistry';
 import SDUIIcon from './SDUIIcon';
+import { useTheme } from '../../ThemeProvider';
 
 const MarketplaceHeader: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
+    const { theme } = useTheme();
     const insets = useSafeAreaInsets();
     const inputRef = useRef<TextInput>(null);
 
@@ -18,7 +20,7 @@ const MarketplaceHeader: React.FC<SDUIRenderingProps> = ({ data, onAction }) => 
         <View style={[styles.mktHeaderContainer, { paddingTop: Math.max(insets.top, 50) }]}>
             <View style={styles.rowBetween}>
                 <Text style={styles.mktTitle}>Marketplace</Text>
-                <TouchableOpacity style={styles.addShopBtn}>
+                <TouchableOpacity style={[styles.addShopBtn, { backgroundColor: theme.colors.primary }]}>
                     <Text style={styles.addShopText}>🏪 Add Your Shop</Text>
                 </TouchableOpacity>
             </View>
