@@ -59,6 +59,10 @@ export class MockInterceptor {
               return this.getMockMarketplaceResponse();
             }
 
+            if (typeof url === 'string' && url.includes('/central/help')) {
+              return this.getMockHelpResponse();
+            }
+
             if (typeof url === 'string' && url.includes('/tenant/sdui/solo-parent-form')) {
               return this.getSoloParentFormSchema();
             }
@@ -1237,6 +1241,14 @@ export class MockInterceptor {
           }
         }
       ]
+    };
+    return Promise.resolve(new Response(JSON.stringify({ success: true, data }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
+  }
+
+  private static getMockHelpResponse(): Promise<Response> {
+    const data = {
+      type: 'HelpCenter',
+      props: {}
     };
     return Promise.resolve(new Response(JSON.stringify({ success: true, data }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
   }

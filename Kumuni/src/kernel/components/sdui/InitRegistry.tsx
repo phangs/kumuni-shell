@@ -1,3 +1,4 @@
+import React from 'react';
 import { registerComponent } from './SDUIRegistry';
 import DashboardHeader from './components/DashboardHeader';
 import WalletCard from './components/WalletCard';
@@ -19,6 +20,7 @@ import SectionDivider from './components/SectionDivider';
 import OnboardingSlide from './components/OnboardingSlide';
 import AppWelcomeScreen from './components/AppWelcomeScreen';
 import SDUIIcon from './components/SDUIIcon';
+import HelpCenterScreen from '../HelpCenterScreen';
 import { SDUIContainer, SDUIScrollView, SDUIText, SDUIButton, SDUIInput, SDUIHeading, SDUIImage, SDUIDatePicker } from './components/Atoms';
 
 export const initRegistry = () => {
@@ -57,4 +59,7 @@ export const initRegistry = () => {
     registerComponent('SectionDivider', SectionDivider);
     registerComponent('OnboardingSlide', OnboardingSlide);
     registerComponent('AppWelcomeScreen', AppWelcomeScreen);
+    registerComponent('HelpCenter', (props) => (
+        <HelpCenterScreen onBack={() => props.onAction?.('@popPage', {})} />
+    ));
 };

@@ -78,7 +78,8 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
         const getPriority = (path: string) => {
             if (path.includes('dashboard')) return 0;
             if (path.includes('marketplace')) return 1;
-            return 2;
+            if (path.includes('help')) return 2;
+            return 3;
         };
         const isBack = getPriority(endpoint) < getPriority(fromPath);
         const dir = isBack ? 'back' : 'forward';
@@ -212,8 +213,18 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
             return;
         }
 
-        if (action === 'help') {
-            setShowHelpCenter(true);
+        if (action === 'help' || action === 'nav_help') {
+            if (sduiData) setPrevSduiData(sduiData);
+            setPrevPath(currentPath);
+            setCurrentPath('/central/help');
+            return;
+        }
+
+        if (action === '@popPage') {
+            if (sduiData) setPrevSduiData(sduiData);
+            const targetPath = prevPath || '/central/dashboard';
+            setPrevPath(currentPath);
+            setCurrentPath(targetPath);
             return;
         }
 
@@ -606,14 +617,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
                 </View>
             )}
 
-            {/* Help Center Screen */}
-            {showHelpCenter && (
-                <View style={[StyleSheet.absoluteFill, { zIndex: 2000 }]}>
-                    <HelpCenterScreen
-                        onBack={() => setShowHelpCenter(false)}
-                    />
-                </View>
-            )}
+            {/* Help Center Screen is now handled via SDUI Transition */}
 
             {/* Registration Screen */}
             {showRegistration && (
