@@ -400,7 +400,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
         if (currentPath.includes('dashboard')) return 'home';
         if (currentPath.includes('marketplace')) return 'marketplace';
         if (currentPath.includes('wallet')) return 'wallet';
-        if (currentPath.includes('profile') || currentPath.includes('registration')) return 'profile';
+        if (currentPath.includes('profile')) return 'profile';
         return null; // Hide nav bar for detailed views/miniapps
     };
 
