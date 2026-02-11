@@ -166,12 +166,26 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
 
         // Handle Navigation Actions
         if (action === 'nav_home') {
+            // Clear overlays
+            setShowHelpCenter(false);
+            setShowProfile(false);
+            setShowRegistration(false);
+            setShowMoreDrawer(false);
+            setShowFullPage(false);
+
             if (sduiData) setPrevSduiData(sduiData);
             setPrevPath(currentPath);
             setCurrentPath('/central/dashboard');
             return;
         }
         if (action === 'nav_marketplace') {
+            // Clear overlays
+            setShowHelpCenter(false);
+            setShowProfile(false);
+            setShowRegistration(false);
+            setShowMoreDrawer(false);
+            setShowFullPage(false);
+
             if (sduiData) setPrevSduiData(sduiData);
             setPrevPath(currentPath);
             setCurrentPath('/central/marketplace');
@@ -447,22 +461,22 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
                             <>
                                 <TouchableOpacity onPress={() => handleAction('nav_home')} style={styles.navItem}>
                                     <View style={activeTab === 'home' ? styles.activeIconCircle : null}>
-                                        <SDUIIcon data={{ props: { name: 'home', size: 30, color: activeTab === 'home' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'home' ? 1 : 0.6 } } }} />
+                                        <SDUIIcon data={{ props: { name: 'nav_home_guest', size: 30, color: activeTab === 'home' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'home' ? 1 : 0.6 } } }} />
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => handleAction('nav_marketplace')} style={styles.navItem}>
                                     <View style={activeTab === 'marketplace' ? styles.activeIconCircle : null}>
-                                        <SDUIIcon data={{ props: { name: 'marketplace', size: 30, color: activeTab === 'marketplace' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'marketplace' ? 1 : 0.6 } } }} />
+                                        <SDUIIcon data={{ props: { name: 'nav_marketplace_guest', size: 30, color: activeTab === 'marketplace' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'marketplace' ? 1 : 0.6 } } }} />
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => handleAction('help')} style={styles.navItem}>
                                     <View style={activeTab === 'help' ? styles.activeIconCircle : null}>
-                                        <SDUIIcon data={{ props: { name: 'help', size: 30, color: activeTab === 'help' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'help' ? 1 : 0.6 } } }} />
+                                        <SDUIIcon data={{ props: { name: 'nav_help_guest', size: 30, color: activeTab === 'help' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'help' ? 1 : 0.6 } } }} />
                                     </View>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => handleAction('nav_profile')} style={styles.navItem}>
                                     <View style={activeTab === 'profile' ? styles.activeIconCircle : null}>
-                                        <SDUIIcon data={{ props: { name: 'user', size: 30, color: activeTab === 'profile' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'profile' ? 1 : 0.6 } } }} />
+                                        <SDUIIcon data={{ props: { name: 'nav_person_guest', size: 30, color: activeTab === 'profile' ? theme.colors.primary : '#FFF', style: { opacity: activeTab === 'profile' ? 1 : 0.6 } } }} />
                                     </View>
                                 </TouchableOpacity>
                             </>
@@ -701,7 +715,7 @@ const styles = StyleSheet.create({
         left: 20,
         right: 20,
         bottom: 20,
-        zIndex: 100
+        zIndex: 3000 // Ensure it's above all overlays like Help Center (2000)
     },
     navBar: {
         height: 75,

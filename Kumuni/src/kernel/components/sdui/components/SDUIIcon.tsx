@@ -11,6 +11,10 @@ import navWallet from '../../../assets/icons/nav_wallet.svg';
 import wc_ArrowUp from '../../../assets/icons/circle_arrow_up_right.svg';
 import searchIcon from '../../../assets/icons/search_icon.svg';
 import searchMicrophone from '../../../assets/icons/search_microphone.svg';
+import navHomeGuest from '../../../assets/icons/nav_home_guest.svg';
+import navHelpGuest from '../../../assets/icons/nav_help_guest.svg';
+import navMarketplaceGuest from '../../../assets/icons/nav_marketplace_guest.svg';
+import navPersonGuest from '../../../assets/icons/nav_person_guest.svg';
 
 /**
  * SDUIIcon - A flexible icon component supporting multiple formats
@@ -45,6 +49,10 @@ const SVG_MAP: { [key: string]: React.FC<any> } = {
     'wc_arrowup': wc_ArrowUp,
     'search_icon': searchIcon,
     'search_microphone': searchMicrophone,
+    'nav_home_guest': navHomeGuest,
+    'nav_help_guest': navHelpGuest,
+    'nav_marketplace_guest': navMarketplaceGuest,
+    'nav_person_guest': navPersonGuest,
 };
 
 // Icon mapping for common icons (can be extended)
