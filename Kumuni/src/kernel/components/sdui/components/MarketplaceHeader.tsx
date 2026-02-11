@@ -1,11 +1,19 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Keyboard } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SDUIRenderingProps } from '../SDUIRegistry';
 import SDUIIcon from './SDUIIcon';
 
 const MarketplaceHeader: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
     const insets = useSafeAreaInsets();
+    const inputRef = useRef<TextInput>(null);
+
+    useEffect(() => {
+        Keyboard.dismiss();
+        if (inputRef.current) {
+            inputRef.current.blur();
+        }
+    }, []);
     return (
         <View style={[styles.mktHeaderContainer, { paddingTop: Math.max(insets.top, 50) }]}>
             <View style={styles.rowBetween}>
@@ -18,6 +26,7 @@ const MarketplaceHeader: React.FC<SDUIRenderingProps> = ({ data, onAction }) => 
                 <View style={styles.mktSearchWrapper}>
                     <SDUIIcon data={{ props: { name: 'search_icon', size: 18, color: '#C7C7CC' } }} />
                     <TextInput
+                        ref={inputRef}
                         placeholder="Search"
                         placeholderTextColor="#999"
                         style={styles.mktInput}

@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet, Keyboard } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SDUIRenderingProps } from '../SDUIRegistry';
 import UserManager, { UserLevel } from '../../../../shared/utils/UserManager';
@@ -9,6 +9,15 @@ const DashboardHeader: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
     const insets = useSafeAreaInsets();
     const userLevel = UserManager.getInstance().getUserLevel();
     const isGuestHeader = userLevel === UserLevel.GUEST;
+    const inputRef = useRef<TextInput>(null);
+
+    useEffect(() => {
+        // Double security: ensure keyboard is closed and input is blurred on mount
+        Keyboard.dismiss();
+        if (inputRef.current) {
+            inputRef.current.blur();
+        }
+    }, []);
 
     if (isGuestHeader) {
         return (
@@ -16,6 +25,7 @@ const DashboardHeader: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
                 <View style={styles.searchBarWrapper}>
                     <SDUIIcon data={{ props: { name: 'search_icon', size: 20, color: '#999' } }} />
                     <TextInput
+                        ref={inputRef}
                         placeholder={data.props.searchPlaceholder || "Search..."}
                         placeholderTextColor="#999"
                         style={styles.headerInput}
@@ -57,6 +67,7 @@ const DashboardHeader: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
             <View style={styles.searchBarWrapperShadow}>
                 <SDUIIcon data={{ props: { name: 'search_icon', size: 18, color: '#C7C7CC' } }} />
                 <TextInput
+                    ref={inputRef}
                     placeholder={data.props.searchPlaceholder || "Search"}
                     placeholderTextColor="#999"
                     style={styles.headerInput}

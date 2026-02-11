@@ -168,6 +168,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
 
         // Handle Navigation Actions
         if (action === 'nav_home') {
+            Keyboard.dismiss();
             // Clear overlays
             setShowHelpCenter(false);
             setShowProfile(false);
@@ -181,6 +182,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
             return;
         }
         if (action === 'nav_marketplace') {
+            Keyboard.dismiss();
             // Clear overlays
             setShowHelpCenter(false);
             setShowProfile(false);
@@ -234,6 +236,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
         }
 
         if (action === '@popPage') {
+            Keyboard.dismiss();
             if (sduiData) setPrevSduiData(sduiData);
             const targetPath = (prevPath && prevPath !== '/central/registration') ? prevPath : '/central/dashboard';
             setPrevPath(currentPath);

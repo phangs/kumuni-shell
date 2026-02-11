@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
     View,
     Text,
@@ -8,6 +8,7 @@ import {
     Dimensions,
     StatusBar,
     ScrollView,
+    Keyboard,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -19,6 +20,14 @@ interface HelpCenterScreenProps {
 
 const HelpCenterScreen: React.FC<HelpCenterScreenProps> = ({ onBack }) => {
     const insets = useSafeAreaInsets();
+    const inputRef = useRef<TextInput>(null);
+
+    useEffect(() => {
+        Keyboard.dismiss();
+        if (inputRef.current) {
+            inputRef.current.blur();
+        }
+    }, []);
 
     return (
         <View style={styles.container}>
@@ -41,6 +50,7 @@ const HelpCenterScreen: React.FC<HelpCenterScreenProps> = ({ onBack }) => {
                     <View style={styles.searchContainer}>
                         <Text style={styles.searchIcon}>🔍</Text>
                         <TextInput
+                            ref={inputRef}
                             placeholder="Search"
                             placeholderTextColor="#A9A9A9"
                             style={styles.searchInput}
