@@ -127,8 +127,14 @@ const ICON_MAP: { [key: string]: string } = {
     'scan': '📸',
 };
 
+import { useTheme } from '../../ThemeProvider';
+
 const SDUIIcon: React.FC<SDUIRenderingProps> = ({ data }) => {
-    const { name, size = 24, color = '#000', style } = data.props || {};
+    const { theme } = useTheme();
+    const { name, size = 24, color: propColor, stroke, fill, style } = data.props || {};
+
+    // Default to theme primary color if no specific color is provided
+    const color = propColor || theme.colors.primary || '#000';
 
     if (!name) return <Text style={{ fontSize: size }}>?</Text>;
 
@@ -137,7 +143,13 @@ const SDUIIcon: React.FC<SDUIRenderingProps> = ({ data }) => {
         if (name.toLowerCase().endsWith('.svg')) {
             return (
                 <View style={style}>
-                    <SvgUri uri={name} width={size} height={size} color={color} />
+                    <SvgUri
+                        uri={name}
+                        width={size}
+                        height={size}
+                        fill={fill || "none"}
+                        stroke={stroke || color}
+                    />
                 </View>
             );
         }
@@ -155,7 +167,12 @@ const SDUIIcon: React.FC<SDUIRenderingProps> = ({ data }) => {
     if (SvgIcon) {
         return (
             <View style={style}>
-                <SvgIcon width={size} height={size} fill={color} />
+                <SvgIcon
+                    width={size}
+                    height={size}
+                    fill={fill || "none"}
+                    stroke={stroke || color}
+                />
             </View>
         );
     }
