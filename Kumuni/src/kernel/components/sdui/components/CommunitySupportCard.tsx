@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { SDUIRenderingProps } from '../SDUIRegistry';
+import { useTheme } from '../../ThemeProvider';
 
 const CommunitySupportCard: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
+    const { theme } = useTheme();
     return (
         <View style={[styles.sectionContainer, { marginTop: 25, marginBottom: 40 }]}>
             <View style={styles.supportCard}>
@@ -12,7 +14,7 @@ const CommunitySupportCard: React.FC<SDUIRenderingProps> = ({ data, onAction }) 
 
                 <View style={{ flexDirection: 'row', marginTop: 30 }}>
                     {data.props.primaryAction && (
-                        <TouchableOpacity style={styles.primarySupportBtn} onPress={() => onAction?.(data.props.primaryAction.action)}>
+                        <TouchableOpacity style={[styles.primarySupportBtn, { backgroundColor: theme.colors.primary }]} onPress={() => onAction?.(data.props.primaryAction.action)}>
                             <Text style={styles.primarySupportText}>{data.props.primaryAction.label}</Text>
                         </TouchableOpacity>
                     )}

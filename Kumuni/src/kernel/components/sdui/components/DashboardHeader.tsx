@@ -4,8 +4,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SDUIRenderingProps } from '../SDUIRegistry';
 import UserManager, { UserLevel } from '../../../../shared/utils/UserManager';
 import SDUIIcon from './SDUIIcon';
+import { useTheme } from '../../ThemeProvider';
 
 const DashboardHeader: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
+    const { theme } = useTheme();
     const insets = useSafeAreaInsets();
     const userLevel = UserManager.getInstance().getUserLevel();
     const isGuestHeader = userLevel === UserLevel.GUEST;
@@ -21,7 +23,7 @@ const DashboardHeader: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
 
     if (isGuestHeader) {
         return (
-            <View style={[styles.headerContainer, { backgroundColor: '#1A1A1A', paddingTop: insets.top + 10, paddingBottom: 15 }]}>
+            <View style={[styles.headerContainer, { backgroundColor: theme.colors.primary, paddingTop: insets.top + 10, paddingBottom: 15 }]}>
                 <View style={styles.searchBarWrapper}>
                     <SDUIIcon data={{ props: { name: 'search_icon', size: 20, color: '#999' } }} />
                     <TextInput

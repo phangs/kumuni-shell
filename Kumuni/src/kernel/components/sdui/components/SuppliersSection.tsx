@@ -2,8 +2,10 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { SDUIRenderingProps } from '../SDUIRegistry';
 import { screenWidth } from '../BaseStyles';
+import { useTheme } from '../../ThemeProvider';
 
 const SuppliersSection: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
+    const { theme } = useTheme();
     return (
         <View style={styles.sectionContainer}>
             <View style={[styles.rowBetween, { alignItems: 'flex-start' }]}>
@@ -58,7 +60,7 @@ const SuppliersSection: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
                                 ))}
                             </View>
 
-                            <TouchableOpacity style={styles.browseBtn} onPress={() => onAction?.(item.action)}>
+                            <TouchableOpacity style={[styles.browseBtn, { backgroundColor: theme.colors.primary }]} onPress={() => onAction?.(item.action)}>
                                 <Text style={styles.browseBtnText}>Browse Catalog</Text>
                             </TouchableOpacity>
                         </View>
