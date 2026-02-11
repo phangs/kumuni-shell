@@ -18,6 +18,51 @@ interface PinCodeScreenProps {
     onComplete: (pin: string) => void;
 }
 
+const AnimatedPinDot: React.FC<{ isFilled: boolean; primaryColor: string }> = ({ isFilled, primaryColor }) => {
+    const scaleAnim = useRef(new Animated.Value(1)).current;
+    const colorAnim = useRef(new Animated.Value(isFilled ? 1 : 0)).current;
+
+    useEffect(() => {
+        // Trigger Pop & Scale Animation
+        Animated.parallel([
+            Animated.sequence([
+                Animated.timing(scaleAnim, {
+                    toValue: 1.3,
+                    duration: 100,
+                    useNativeDriver: true,
+                }),
+                Animated.spring(scaleAnim, {
+                    toValue: 1,
+                    friction: 4,
+                    useNativeDriver: true,
+                }),
+            ]),
+            Animated.timing(colorAnim, {
+                toValue: isFilled ? 1 : 0,
+                duration: 200,
+                useNativeDriver: false,
+            }),
+        ]).start();
+    }, [isFilled]);
+
+    const backgroundColor = colorAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['#F2F2F7', primaryColor],
+    });
+
+    return (
+        <Animated.View
+            style={[
+                styles.dot,
+                {
+                    backgroundColor,
+                    transform: [{ scale: scaleAnim }],
+                },
+            ]}
+        />
+    );
+};
+
 const PinCodeScreen: React.FC<PinCodeScreenProps> = ({ onComplete }) => {
     const { theme } = useTheme();
     const insets = useSafeAreaInsets();
@@ -88,12 +133,10 @@ const PinCodeScreen: React.FC<PinCodeScreenProps> = ({ onComplete }) => {
     const renderDot = (index: number) => {
         const isFilled = index < currentPin.length;
         return (
-            <View
+            <AnimatedPinDot
                 key={index}
-                style={[
-                    styles.dot,
-                    isFilled ? { backgroundColor: theme.colors.primary } : styles.dotEmpty
-                ]}
+                isFilled={isFilled}
+                primaryColor={theme.colors.primary}
             />
         );
     };
