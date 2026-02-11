@@ -367,7 +367,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
             setShowWelcomeModal(true);
 
             // Refresh dashboard data to show wallet etc.
-            fetchScreenData('/central/dashboard');
+            setCurrentPath('/central/dashboard');
         } catch (err) {
             console.error('PIN Setup Error:', err);
             Alert.alert('Error', 'Failed to set PIN');

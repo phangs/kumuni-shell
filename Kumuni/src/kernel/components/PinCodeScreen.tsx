@@ -29,12 +29,12 @@ const AnimatedPinDot: React.FC<{ isFilled: boolean; primaryColor: string }> = ({
                 Animated.timing(scaleAnim, {
                     toValue: 1.3,
                     duration: 100,
-                    useNativeDriver: true,
+                    useNativeDriver: false,
                 }),
                 Animated.spring(scaleAnim, {
                     toValue: 1,
                     friction: 4,
-                    useNativeDriver: true,
+                    useNativeDriver: false,
                 }),
             ]),
             Animated.timing(colorAnim, {

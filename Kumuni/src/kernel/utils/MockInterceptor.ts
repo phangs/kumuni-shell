@@ -1164,7 +1164,7 @@ export class MockInterceptor {
   private static getMockMasterConfigResponse(): Promise<Response> {
     console.log('MockInterceptor: Generating Master Config response...');
     const config = {
-      theme: { primaryColor: '#00ff5e', secondaryColor: '#1A1A1A' },
+      theme: { primaryColor: '#c139f7ff', secondaryColor: '#1A1A1A' },
       central_config: { url: CENTRAL_API_URL, credentials: { apiKey: CENTRAL_API_KEY, secret: CENTRAL_API_SECRET } },
       tenant_config: { id: TENANT_ID, url: TENANT_API_URL, credentials: { apiKey: TENANT_API_KEY, secret: TENANT_API_SECRET } },
       module_registry: [

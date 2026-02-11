@@ -43,7 +43,8 @@ const SDUIIntroPage: React.FC<SDUIIntroPageProps> = ({ onContinue, onSkip }) => 
       });
 
       if (response.success) {
-        setSduiData(response.data);
+        const enhancedData = applyThemeOverrides(response.data);
+        setSduiData(enhancedData);
       } else {
         throw new Error(response.message || 'Failed to fetch SDUI data');
       }
@@ -52,6 +53,31 @@ const SDUIIntroPage: React.FC<SDUIIntroPageProps> = ({ onContinue, onSkip }) => 
     } finally {
       setLoading(false);
     }
+  };
+
+  const applyThemeOverrides = (data: SDUIData): SDUIData => {
+    const newData = JSON.parse(JSON.stringify(data));
+
+    const traverse = (node: SDUIData) => {
+      if (node.type === 'button') {
+        // Force primary variant to use theme color
+        // This ensures the app overrides the SDUI color with the master config primary color
+        node.props = node.props || {};
+        node.props.variant = 'primary';
+
+        // Remove hardcoded background color if present to ensure clean override
+        if (node.props.style && node.props.style.backgroundColor) {
+          delete node.props.style.backgroundColor;
+        }
+      }
+
+      if (node.children) {
+        node.children.forEach(traverse);
+      }
+    };
+
+    traverse(newData);
+    return newData;
   };
 
   const handleAction = (action: string) => {
