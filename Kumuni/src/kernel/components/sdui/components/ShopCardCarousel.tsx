@@ -2,8 +2,10 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { SDUIRenderingProps } from '../SDUIRegistry';
 import { screenWidth } from '../BaseStyles';
+import { useTheme } from '../../ThemeProvider';
 
 const ShopCardCarousel: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
+    const { theme } = useTheme();
     return (
         <View style={[styles.sectionContainer, { marginTop: 25 }]}>
             <View style={styles.rowBetween}>
@@ -43,7 +45,7 @@ const ShopCardCarousel: React.FC<SDUIRenderingProps> = ({ data, onAction }) => {
                                 </View>
                             </View>
 
-                            <TouchableOpacity style={styles.visitBtn} onPress={() => onAction?.(shop.action)}>
+                            <TouchableOpacity style={[styles.visitBtn, { backgroundColor: theme.colors.primary }]} onPress={() => onAction?.(shop.action)}>
                                 <Text style={styles.visitBtnText}>Visit Shop</Text>
                             </TouchableOpacity>
                         </View>
