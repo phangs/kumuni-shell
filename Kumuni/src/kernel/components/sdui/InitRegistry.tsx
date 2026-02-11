@@ -21,6 +21,7 @@ import OnboardingSlide from './components/OnboardingSlide';
 import AppWelcomeScreen from './components/AppWelcomeScreen';
 import SDUIIcon from './components/SDUIIcon';
 import HelpCenterScreen from '../HelpCenterScreen';
+import RegistrationScreen from '../RegistrationScreen';
 import { SDUIContainer, SDUIScrollView, SDUIText, SDUIButton, SDUIInput, SDUIHeading, SDUIImage, SDUIDatePicker } from './components/Atoms';
 
 export const initRegistry = () => {
@@ -61,5 +62,12 @@ export const initRegistry = () => {
     registerComponent('AppWelcomeScreen', AppWelcomeScreen);
     registerComponent('HelpCenter', (props) => (
         <HelpCenterScreen onBack={() => props.onAction?.('@popPage', {})} />
+    ));
+    registerComponent('Registration', (props) => (
+        <RegistrationScreen
+            onBack={() => props.onAction?.('@popPage', {})}
+            onSendOTP={(phone) => props.onAction?.('@sendOTP', { phone })}
+            onHelp={() => props.onAction?.('help', {})}
+        />
     ));
 };

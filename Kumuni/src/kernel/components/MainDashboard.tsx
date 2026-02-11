@@ -79,7 +79,8 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
             if (path.includes('dashboard')) return 0;
             if (path.includes('marketplace')) return 1;
             if (path.includes('help')) return 2;
-            return 3;
+            if (path.includes('registration') || path.includes('profile')) return 3;
+            return 4;
         };
         const isBack = getPriority(endpoint) < getPriority(fromPath);
         const dir = isBack ? 'back' : 'forward';
@@ -204,12 +205,24 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
         }
 
         if (action === 'registration' || action === 'seller_signup' || action === 'signup') {
-            setShowRegistration(true);
+            if (userLevel === UserLevel.GUEST) {
+                if (sduiData) setPrevSduiData(sduiData);
+                setPrevPath(currentPath);
+                setCurrentPath('/central/registration');
+            } else {
+                setShowRegistration(true);
+            }
             return;
         }
 
         if (action === 'nav_profile') {
-            setShowProfile(true);
+            if (userLevel === UserLevel.GUEST) {
+                if (sduiData) setPrevSduiData(sduiData);
+                setPrevPath(currentPath);
+                setCurrentPath('/central/registration');
+            } else {
+                setShowProfile(true);
+            }
             return;
         }
 
@@ -222,9 +235,14 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
 
         if (action === '@popPage') {
             if (sduiData) setPrevSduiData(sduiData);
-            const targetPath = prevPath || '/central/dashboard';
+            const targetPath = (prevPath && prevPath !== '/central/registration') ? prevPath : '/central/dashboard';
             setPrevPath(currentPath);
             setCurrentPath(targetPath);
+            return;
+        }
+
+        if (action === '@sendOTP') {
+            handleSendOTP(params.phone);
             return;
         }
 
@@ -382,7 +400,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
         if (currentPath.includes('dashboard')) return 'home';
         if (currentPath.includes('marketplace')) return 'marketplace';
         if (currentPath.includes('wallet')) return 'wallet';
-        if (currentPath.includes('profile')) return 'profile';
+        if (currentPath.includes('profile') || currentPath.includes('registration')) return 'profile';
         return null; // Hide nav bar for detailed views/miniapps
     };
 
@@ -619,16 +637,7 @@ const MainDashboard: React.FC<MainDashboardProps> = ({ onLogout }) => {
 
             {/* Help Center Screen is now handled via SDUI Transition */}
 
-            {/* Registration Screen */}
-            {showRegistration && (
-                <View style={[StyleSheet.absoluteFill, { zIndex: 1000 }]}>
-                    <RegistrationScreen
-                        onBack={() => setShowRegistration(false)}
-                        onSendOTP={handleSendOTP}
-                        onHelp={() => setShowHelpCenter(true)}
-                    />
-                </View>
-            )}
+            {/* Registration Screen is now handled via SDUI Transition for Guests */}
 
             {/* OTP Verification Screen */}
             {showOTPScreen && (

@@ -63,6 +63,10 @@ export class MockInterceptor {
               return this.getMockHelpResponse();
             }
 
+            if (typeof url === 'string' && url.includes('/central/registration')) {
+              return this.getMockRegistrationResponse();
+            }
+
             if (typeof url === 'string' && url.includes('/tenant/sdui/solo-parent-form')) {
               return this.getSoloParentFormSchema();
             }
@@ -1248,6 +1252,15 @@ export class MockInterceptor {
   private static getMockHelpResponse(): Promise<Response> {
     const data = {
       type: 'HelpCenter',
+      styleMode: 'fullscreen',
+      props: {}
+    };
+    return Promise.resolve(new Response(JSON.stringify({ success: true, data }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
+  }
+
+  private static getMockRegistrationResponse(): Promise<Response> {
+    const data = {
+      type: 'Registration',
       styleMode: 'fullscreen',
       props: {}
     };
