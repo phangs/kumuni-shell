@@ -1,117 +1,194 @@
 # Kumuni Backend API Documentation
 
-This document outlines the HTTP communication patterns between the Kumuni Shell and its backend services. 
+This document outlines the exact HTTP communication patterns and JSON responses expected by the Kumuni Super App. **Backend developers must ensure their API returns the specific JSON structures defined below.**
 
 ## 🛡️ Global Security Headers
-All requests to Central or Tenant backends include the following standard headers:
+All requests to Central or Tenant backends include:
 
 | Header | Value | Description |
 | :--- | :--- | :--- |
-| `Content-Type` | `application/json` | standard JSON format |
-| `X-API-Key` | `<CENTRAL_OR_TENANT_API_KEY>` | Identifies the Kumuni Shell instance |
-| `Authorization` | `Bearer <JWT_TOKEN>` | Provided after Guest or Registered login |
+| `Content-Type` | `application/json` | Standards JSON format |
+| `X-API-Key` | `<CENTRAL_OR_TENANT_API_KEY>` | API key for authentication |
+| `Authorization` | `Bearer <JWT_TOKEN>` | User session token (Guest or Registered) |
 
 ---
 
 ## 🏛️ 1. Central Backend
-**Base URL**: `https://central-api.kumuni.com` (Default)
-**Purpose**: Global Authentication, Global Finance, and Shared App Configuration.
+**Base URL**: `https://central-api.kumuni.com`
 
-### 🔑 Authentication Flow
+### 🔑 Authentication
 #### **POST** `/auth/guest`
-Generates a temporary session for unregistered users.
 - **Request Body**: `{ "tenantId": "dev-tenant-123" }`
-- **Expected Success Response**:
-  ```json
-  {
-    "token": "mock-guest-token-xyz123",
-    "expiresAt": "2026-02-12T...",
-    "tenantId": "dev-tenant-123"
-  }
-  ```
+- **Response**:
+```json
+{
+  "token": "mock-guest-token-abc123xyz",
+  "expiresAt": "2026-02-12T06:44:27.123Z",
+  "tenantId": "dev-tenant-123"
+}
+```
 
 #### **POST** `/auth/otp/send`
-Requests an OTP code for mobile registration.
 - **Request Body**: `{ "phoneNumber": "9876543210" }`
-- **Expected Success Response**: `{ "success": true, "message": "OTP sent" }`
+- **Response**:
+```json
+{
+  "success": true,
+  "message": "OTP sent"
+}
+```
 
 #### **POST** `/auth/otp/verify`
-Exchanges an OTP for a Registered User JWT.
 - **Request Body**: `{ "phoneNumber": "9876543210", "otp": "123456" }`
-- **Expected Success Response**:
-  ```json
-  {
-    "success": true,
-    "token": "mock-registered-user-token-abc...",
-    "user": { "id": "user_123", "phone": "9876543210", "level": "registered" }
+- **Response**:
+```json
+{
+  "success": true,
+  "token": "mock-registered-user-token-789def",
+  "user": {
+    "id": "user_123",
+    "phone": "9876543210",
+    "level": "registered"
   }
-  ```
+}
+```
 
-### 🖼️ UI & Content (SDUI)
+### 🖼️ UI Layouts (SDUI)
 #### **GET** `/central/dashboard`
-Fetches the main dashboard layout.
-- **Headers**: Standard + `Authorization: Bearer <TOKEN>`
-- **Expected Response**: SDUI JSON (Container > Scrollview > Components)
+- **Response**:
+```json
+{
+  "success": true,
+  "data": {
+    "type": "container",
+    "styleMode": "fullscreen",
+    "props": { "style": { "flex": 1, "backgroundColor": "#FFF" } },
+    "children": [
+      {
+        "type": "scrollview",
+        "props": { "style": { "flex": 1 }, "contentContainerStyle": { "paddingBottom": 120 } },
+        "children": [
+          {
+            "type": "DashboardHeader",
+            "props": {
+              "searchPlaceholder": "Search services...",
+              "userName": "Juan",
+              "userEmoji": "👋",
+              "cityLogoUrl": "https://dev-supabase.ctoglobal.co/storage/v1/object/public/temp-images/Ph_seal_Mandaluyong_25.webp"
+            }
+          },
+          {
+            "type": "WalletCard",
+            "props": {
+              "balance": "PHP 12,450.00",
+              "guestBackgroundImage": "https://dev-supabase.ctoglobal.co/storage/v1/object/public/miniapp-images/webp/Generated_Image_February_04_2026_-_8_23PM.webp"
+            }
+          },
+          {
+            "type": "ServicesGrid",
+            "props": {
+              "services": [
+                { "label": "Cedula (CTC)", "icon": "URL", "action": "cedula" },
+                { "label": "More", "icon": "URL", "action": "more" }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
+```
 
 #### **GET** `/central/marketplace`
-Fetches the marketplace/discover layout.
-- **Headers**: Standard + `Authorization: Bearer <TOKEN>`
-- **Expected Response**: SDUI JSON formatted for Marketplace elements.
-
-#### **GET** `/central/sdui/intro-page`
-Initial landing page configuration.
+- **Response**:
+```json
+{
+  "success": true,
+  "data": {
+    "type": "scrollview",
+    "styleMode": "fullscreen",
+    "props": { "style": { "flex": 1, "backgroundColor": "#FFF" }, "contentContainerStyle": { "paddingBottom": 120 } },
+    "children": [
+      { "type": "MarketplaceHeader", "props": {} },
+      {
+        "type": "CategoryCarousel",
+        "props": {
+          "title": "Top Categories",
+          "categories": [{ "label": "Food", "icon": "🍲" }]
+        }
+      }
+    ]
+  }
+}
+```
 
 ---
 
 ## 🏘️ 2. Tenant Backend (LGU)
-**Base URL**: `https://tenant-api.kumuni.com` (Default)
-**Purpose**: LGU-specific PII storage, local forms, and local miniapp catalog.
+**Base URL**: `https://tenant-api.kumuni.com`
 
-### 🔐 Tenant Auth
-#### **POST** `/auth/exchange-token`
-Exchanges a Central JWT for a Tenant-specific JWT to access LGU database.
-- **Headers**: Standard + `Authorization: Bearer <CENTRAL_TOKEN>`
-- **Request Body**: `{}`
-- **Expected Response**: `{ "success": true, "token": "mock-tenant-token-xyz" }`
-
-### 📋 Services & Forms
+### 📋 Services Catalog
 #### **GET** `/miniapps/more`
-Fetches the list of additional LGU services in the Drawer.
-- **Expected Response**: 
-  ```json
-  {
-    "success": true, 
-    "data": [
-      { "id": "permit", "label": "Permit", "icon": "URL", "action": "action_id" }
+- **Response**:
+```json
+{
+  "success": true,
+  "data": [
+    { "id": "permit", "label": "Business Permit", "icon": "SVG_URL", "action": "biz_permit" },
+    { "id": "cedula", "label": "Cedula (CTC)", "icon": "SVG_URL", "action": "cedula" }
+  ]
+}
+```
+
+### 📝 Solo Parent Application
+#### **GET** `/tenant/sdui/solo-parent-form`
+- **Response**:
+```json
+{
+  "success": true,
+  "data": {
+    "type": "container",
+    "props": { "style": { "padding": 20, "backgroundColor": "#FFF", "flex": 1 } },
+    "children": [
+      { "type": "Text", "props": { "content": "Solo Parent Application", "style": { "fontSize": 24 } } },
+      { "type": "Input", "props": { "label": "Full Name", "name": "fullName" } },
+      { "type": "Button", "props": { "label": "Submit", "variant": "primary" }, "action": "submit_form" }
     ]
   }
-  ```
-
-#### **GET** `/tenant/sdui/solo-parent-form`
-Fetches the SDUI schema for the Solo Parent application.
-- **Expected Response**: SDUI Page JSON with Input fields, DatePickers, and Validation.
+}
+```
 
 #### **POST** `/tenant/forms/solo-parent`
-Submits application data for a Solo Parent ID.
-- **Request Body**: Map of field IDs to values: `{ "firstName": "Juan", "lastName": "Dela Cruz", ... }`
-- **Expected Response**: `{ "success": true, "message": "Reference ID: SP-XXXX" }`
-
-#### **GET** `/tenant/sdui/cedula-app`
-Fetches the multi-page SDUI flow for Cedula (CTC) application.
+- **Request Body**: `{ "fullName": "...", "dependents": "..." }`
+- **Response**:
+```json
+{
+  "success": true,
+  "message": "Application Submitted Successfully! Reference ID: SP-A1B2C3"
+}
+```
 
 ---
 
-## ⚙️ 3. Initialization / Bootstrap
-**URL**: `https://mock-api.example.com/master_config`
-**Purpose**: First call made by the app to determine theme, backend URLs, and module permissions.
-
-- **Method**: `GET`
-- **Expected Response**:
-  ```json
-  {
-    "theme": { "primaryColor": "#...", "secondaryColor": "#..." },
-    "central_config": { "url": "...", "credentials": { "apiKey": "..." } },
-    "tenant_config": { "id": "...", "url": "..." },
-    "module_registry": [ { "id": "shell", "permissions": ["*"] } ]
-  }
-  ```
+## ⚙️ 3. Initialization
+**GET** `https://mock-api.example.com/master_config`
+- **Response**:
+```json
+{
+  "theme": { "primaryColor": "#00ff5e", "secondaryColor": "#1A1A1A" },
+  "central_config": { 
+    "url": "https://central-api.kumuni.com", 
+    "credentials": { "apiKey": "...", "secret": "..." } 
+  },
+  "tenant_config": { 
+    "id": "dev-tenant-123", 
+    "url": "https://tenant-api.kumuni.com", 
+    "credentials": { "apiKey": "...", "secret": "..." } 
+  },
+  "module_registry": [
+    { "id": "shell", "name": "Kumuni Shell", "type": "sdui", "permissions": ["*"] },
+    { "id": "cedula", "name": "Cedula Application", "type": "sdui", "entry_url": "...", "permissions": ["/mobile/submission"] }
+  ]
+}
+```
